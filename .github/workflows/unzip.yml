@@ -5,14 +5,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Unzip files
+      - name: Unzip and move files
         run: |
           unzip -o BODY-Bot-main.zip
-          mv -f BODY-Bot-main/BODY-Bot-main/* . 2>/dev/null || true
-          mv -f BODY-Bot-main/* . 2>/dev/null || true
-          rm -rf BODY-Bot-main.zip BODY-Bot-main __MACOSX
-          ls -la
-      - name: Commit
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "Extract bot files"
+          rm BODY-Bot-main.zip
+          shopt -s dotglob
+          mv -v BODY-Bot-main/* . 2>/dev/null || true
+          rmdir BODY-Bot-main || true
+          rm -rf .github/workflows/unzip.yml
+          rm -rf BODY-Bot-main.zip
+      - uses: stefanzweifel/git-auto-commit-action@v5
