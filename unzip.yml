@@ -1,0 +1,18 @@
+name: Unzip Bot
+on: workflow_dispatch
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unzip files
+        run: |
+          unzip -o BODY-Bot-main.zip
+          mv -f BODY-Bot-main/BODY-Bot-main/* . 2>/dev/null || true
+          mv -f BODY-Bot-main/* . 2>/dev/null || true
+          rm -rf BODY-Bot-main.zip BODY-Bot-main __MACOSX
+          ls -la
+      - name: Commit
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Extract bot files"
